@@ -3,6 +3,8 @@ const commandLineArgs = require('command-line-args')
 const fetch = require('node-fetch')
 const fs = require('fs')
 
+let startTime = process.hrtime()
+
 // Local Imports ---------------------------------------------------------------
 const { Elm } = require('./Main.elm')
 
@@ -11,6 +13,9 @@ const app = Elm.Main.init()
 const send = input => app.ports.fromJs.send({ day, part, year, input })
 
 app.ports.fromElm.subscribe(result => {
+  const endTime = process.hrtime(startTime)
+
+  console.info('Execution time: %ds %dms', endTime[0], endTime[1] / 1000000)
   console.log(`The result for Advent of Code ${year} day ${day} part ${part} is: ${result}`)
 })
 
@@ -24,6 +29,7 @@ const { day, part, year } = commandLineArgs([
 try {
   const input = require(`../data/${year}/${day}.json`)
 
+  startTime = process.hrtime()
   send(input)
 } catch (e) {
   const session = require('../data/session.json')
@@ -39,6 +45,7 @@ try {
         if (err) console.log(err)
       })
 
+      startTime = process.hrtime()
       send(input)
     })
     .catch(console.log)
