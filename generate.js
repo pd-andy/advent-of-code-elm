@@ -17,19 +17,16 @@ const template = `module AdventOfCode${year}.Day${day} exposing
 import Utils
 
 -- Functions -------------------------------------------------------------------
---
-solveWith : function -> String -> Float
-solveWith solver input =
-  Debug.todo "Solve day ${day}."
+
 
 -- Solvers ---------------------------------------------------------------------
-part1 : String -> Float
-part1 =
+part1 : String -> Int
+part1 input =
   solveWith never
 
-part2 : String -> Float
-part2 =
-  solveWith never
+part2 : String -> Int
+part2 input =
+  0
 `
 
 // -----------------------------------------------------------------------------
