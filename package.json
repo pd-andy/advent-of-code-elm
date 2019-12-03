@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "npx parcel build src/main.js --target node --no-source-maps --out-dir ./ --out-file solve.js",
-    "build:test": "NODE_ENV=development npx parcel build src/main.js --target node --no-source-maps --no-minify --out-dir ./ --out-file solve.js"
+    "build:test": "NODE_ENV=development npx parcel build src/main.js --target node --no-source-maps --no-minify --out-dir ./ --out-file solve.js",
+    "solve:test": "npm run build:test && node solve"
   },
   "author": "",
   "license": "MIT",
