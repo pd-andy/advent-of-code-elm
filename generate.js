@@ -14,7 +14,18 @@ const template = `module AdventOfCode${year}.Day${day} exposing
   )
 
 -- Imports ---------------------------------------------------------------------
+import Basics.Extra as Basics
+import Parser exposing (Parser, Trailing (..), Step (..), (|.), (|=))
 import Utils
+
+-- Types -----------------------------------------------------------------------
+
+
+-- Input -----------------------------------------------------------------------
+--
+parseInput : String -> Int
+parseInput input =
+  0
 
 -- Functions -------------------------------------------------------------------
 
@@ -22,11 +33,11 @@ import Utils
 -- Solvers ---------------------------------------------------------------------
 part1 : String -> Int
 part1 input =
-  solveWith never
+  parseInput 0
 
 part2 : String -> Int
 part2 input =
-  0
+  parseInput 0
 `
 
 // -----------------------------------------------------------------------------
