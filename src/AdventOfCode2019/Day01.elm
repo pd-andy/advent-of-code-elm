@@ -18,18 +18,17 @@ calculateFuelRecursively =
   calculateFuel >> \x -> if x <= 6 then x else x + calculateFuelRecursively x
 
 --
-solveWith : ( Int -> Int ) -> String -> Float
+solveWith : ( Int -> Int ) -> String -> Int
 solveWith solver input =
   String.lines input
     |> List.filterMap ( String.toInt >> Maybe.map solver )
     |> List.sum
-    |> Basics.toFloat
 
 -- Solvers ---------------------------------------------------------------------
-part1 : String -> Float
+part1 : String -> Int
 part1 =
  solveWith calculateFuel
 
-part2 : String -> Float
+part2 : String -> Int
 part2 =
   solveWith calculateFuelRecursively

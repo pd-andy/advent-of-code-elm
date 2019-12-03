@@ -32,7 +32,7 @@ calculateSecondInput target firstInput instructions memory =
   helper 0
 
 -- Solvers ---------------------------------------------------------------------
-part1 : String -> Float
+part1 : String -> Int
 part1 input =
   let
     instructions : List Program.Instruction
@@ -43,9 +43,8 @@ part1 input =
 
   in
   Program.run instructions memory 12 2
-    |> Basics.toFloat
 
-part2 : String -> Float
+part2 : String -> Int
 part2 input =
   let
     target : Int
@@ -63,4 +62,3 @@ part2 input =
     |> Tuple.mapSecond (\n -> calculateSecondInput target n instructions memory)
     |> Utils.sumTuple
     |> (*) 100
-    |> Basics.toFloat
