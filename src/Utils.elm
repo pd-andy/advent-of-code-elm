@@ -1,17 +1,20 @@
 module Utils exposing
   ( withCmd, withCmdNone
   -- Function Utils ------------------------------------------------------------
-  , apply, flip
+  , apply, flip, uncurry
   -- String Utils --------------------------------------------------------------
   , parseInt, parseIntArray, parseFloat
   -- Math Utils ----------------------------------------------------------------
   , divBy, subBy
   -- Tuple Utils ---------------------------------------------------------------
   , toTuple, sumTuple
+   -- List Utils ---------------------------------------------------------------
+  , range, commonElements
   )
 
 -- Imports ---------------------------------------------------------------------
 import Array exposing ( Array )
+import Set exposing ( Set )
 
 -- Update Utils ----------------------------------------------------------------
 withCmd : Cmd msg -> model -> ( model, Cmd msg )
@@ -29,6 +32,10 @@ apply a f =
 
 flip : ( a -> b -> c ) -> b -> a -> c
 flip f b a =
+  f a b
+
+uncurry : (a -> b -> c) -> (a, b) -> c
+uncurry f (a, b) =
   f a b
 
 -- String Utils ----------------------------------------------------------------
@@ -63,3 +70,22 @@ toTuple a =
 sumTuple : ( number, number ) -> number
 sumTuple ( x, y ) =
   x + y
+
+-- List Utils ------------------------------------------------------------------
+range : Int -> Int -> List Int
+range start end =
+  if end > start then
+    List.range start end
+  else
+    range end start
+      |> List.reverse
+
+commonElements : List (List comparable) -> List comparable
+commonElements input =
+  case input of
+    head :: tail ->
+      List.foldl Set.intersect (Set.fromList head) (List.map Set.fromList tail)
+        |> Set.toList
+
+    [] ->
+      []
