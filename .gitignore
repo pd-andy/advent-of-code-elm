@@ -4,3 +4,4 @@ elm-stuff
 dist
 .vscode
 .DS_Store
+session.json
