@@ -83,23 +83,23 @@ fromInt n =
 --
 generateValidPasswords : List (Password -> Bool) -> Range -> List Password
 generateValidPasswords predicates (lowerBound, upperBound) =
-  List.range lowerBound upperBound |> List.filterMap (fromInt >> \pwd ->
-    if validate predicates pwd then
-      Just pwd
+  List.range lowerBound upperBound |> List.filterMap (fromInt >> \pass ->
+    if validate predicates pass then
+      Just pass
     else
       Nothing
   )
 
 --
 validate : List (Password -> Bool) -> Password -> Bool
-validate validators pwd =
-  List.map ((|>) pwd) validators
+validate validators pass =
+  List.map ((|>) pass) validators
     |> List.foldl (&&) True
 
 --
 singleDigits : Password -> Bool
-singleDigits pwd =
-  toList pwd
+singleDigits pass =
+  toList pass
     |> List.map (\n -> 0 <= n && n <= 9)
     |> List.foldl (&&) True
 
@@ -127,10 +127,10 @@ containsAdjacentPairs (Password a b c d e f) =
 
 --
 alwaysAscending : Password -> Bool
-alwaysAscending pwd =
-  toList pwd
+alwaysAscending pass =
+  toList pass
     |> List.sort
-    |> (==) (toList pwd)
+    |> (==) (toList pass)
 
 -- Solvers ---------------------------------------------------------------------
 part1 : String -> Result String Int

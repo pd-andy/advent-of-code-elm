@@ -1,10 +1,10 @@
 module AdventOfCode2019.Day02.Parser exposing
-  ( run
-  )
+  (run
+ )
 
 -- Imports ---------------------------------------------------------------------
-import Parser exposing ( Parser, Trailing (..), Step (..), (|.), (|=) )
-import AdventOfCode2019.Day02.Program exposing ( Instruction, Opcode (..) )
+import Parser exposing (Parser, Trailing (..), Step (..), (|.), (|=))
+import AdventOfCode2019.Day02.Program exposing (Instruction, Opcode (..))
 
 -- Parsers ---------------------------------------------------------------------
 --
@@ -68,23 +68,23 @@ eofInstruction =
     |= Parser.succeed 0
 
 --
-instructions : List Instruction -> Parser ( Step (List Instruction) (List Instruction) )
+instructions : List Instruction -> Parser (Step (List Instruction) (List Instruction))
 instructions rest =
   Parser.oneOf
     [ addInstruction
-        |> Parser.map (\i -> Loop ( i :: rest ))
+        |> Parser.map (\i -> Loop (i :: rest))
     , multiplyInstruction
-        |> Parser.map (\i -> Loop ( i :: rest ))
+        |> Parser.map (\i -> Loop (i :: rest))
     , eofInstruction
-        |> Parser.map (\i -> Done ( i :: rest |> List.reverse ))
+        |> Parser.map (\i -> Done (i :: rest |> List.reverse))
     , Parser.succeed ()
         |. Parser.spaces
         |. Parser.end
-        |> Parser.map (\_ -> Done ( List.reverse rest ))
+        |> Parser.map (\_ -> Done (List.reverse rest))
     ]
 
 --
-program : Parser ( List Instruction )
+program : Parser (List Instruction)
 program =
   Parser.loop [] instructions
 
@@ -94,4 +94,3 @@ run : String -> List Instruction
 run input =
   Parser.run program input
     |> Result.withDefault []
-

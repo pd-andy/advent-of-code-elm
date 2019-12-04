@@ -1,12 +1,10 @@
-module AdventOfCode2019.Day02 exposing
-  ( part1
-  , part2
-  )
+module AdventOfCode2019.Day02 exposing (part1, part2)
 
 -- Imports ---------------------------------------------------------------------
 import AdventOfCode2019.Day02.Parser as Parser
 import AdventOfCode2019.Day02.Program as Program
-import Utils
+
+import Array
 
 -- Functions -------------------------------------------------------------------
 --
@@ -16,7 +14,7 @@ calculateFirstInput target instructions memory =
     helper : Int -> Int
     helper input =
       Program.run instructions memory input 0
-        |> \n -> if n > target then input - 1 else helper ( input + 1 )
+        |> \n -> if n > target then input - 1 else helper (input + 1)
   in
   helper 0
 
@@ -27,24 +25,28 @@ calculateSecondInput target firstInput instructions memory =
     helper : Int -> Int
     helper input =
       Program.run instructions memory firstInput input
-        |> \n -> if n == target then input else helper ( input + 1 )
+        |> \n -> if n == target then input else helper (input + 1)
   in
   helper 0
 
 -- Solvers ---------------------------------------------------------------------
-part1 : String -> Int
+part1 : String -> Result String Int
 part1 input =
   let
     instructions : List Program.Instruction
     instructions = Parser.run input
 
     memory : Program.Memory
-    memory = Utils.parseIntArray "," input
+    memory = 
+      String.split "," input
+        |> List.filterMap String.toInt
+        |> Array.fromList
 
   in
   Program.run instructions memory 12 2
+    |> Ok
 
-part2 : String -> Int
+part2 : String -> Result String Int
 part2 input =
   let
     target : Int
@@ -54,11 +56,15 @@ part2 input =
     instructions = Parser.run input
 
     memory : Program.Memory
-    memory = Utils.parseIntArray "," input
+    memory =
+      String.split "," input
+        |> List.filterMap String.toInt
+        |> Array.fromList
 
   in
   calculateFirstInput target instructions memory
-    |> Utils.toTuple
+    |> (\x -> (x, x))
     |> Tuple.mapSecond (\n -> calculateSecondInput target n instructions memory)
-    |> Utils.sumTuple
+    |> (\(x, y) -> x + y)
     |> (*) 100
+    |> Ok

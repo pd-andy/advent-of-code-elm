@@ -1,10 +1,10 @@
 module AdventOfCode2019.Day02.Program exposing
-  ( Memory, Address, Opcode (..), Instruction, Program
+  (Memory, Address, Opcode (..), Instruction, Program
   , run
-  )
+ )
 
 -- Imports ---------------------------------------------------------------------
-import Array exposing ( Array )
+import Array exposing (Array)
 
 -- Types -----------------------------------------------------------------------
 type alias Memory
@@ -33,7 +33,7 @@ type Program
 --
 run : List Instruction -> Array Int -> Int -> Int -> Int
 run instructions memory noun verb =
-  Running instructions ( setInputs noun verb memory )
+  Running instructions (setInputs noun verb memory)
     |> step
     |> return
 
@@ -70,7 +70,7 @@ executeNextInstruction instructions memory =
     (({ opcode } as instruction) :: rest) ->
       case opcode of
         EOF -> Complete memory
-        _   -> Running rest ( executeInstruction instruction memory )
+        _   -> Running rest (executeInstruction instruction memory)
 
     [] ->
       Complete memory
@@ -92,14 +92,14 @@ get i memory =
 add : Int -> Int -> Int -> Memory -> Memory
 add l_operand r_operand destination memory =
   memory |> Array.set destination
-    ( get l_operand memory
+    (get l_operand memory
     + get r_operand memory
-    )
+   )
 
 --
 multiply : Int -> Int -> Int -> Memory -> Memory
 multiply l_operand r_operand destination memory =
   memory |> Array.set destination
-    ( get l_operand memory
+    (get l_operand memory
     * get r_operand memory
-    )
+   )
