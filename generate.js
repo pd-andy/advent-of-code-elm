@@ -8,36 +8,37 @@ const options = commandLineArgs([
 const day = String(options.day).padStart(2, '0')
 const year = options.year || 2019
 
-const template = `module AdventOfCode${year}.Day${day} exposing
-  ( part1
-  , part2
-  )
+const template = `module AdventOfCode${year}.Day${day} exposing (part1, part2)
 
 -- Imports ---------------------------------------------------------------------
 import Basics.Extra as Basics
 import Parser exposing (Parser, Trailing (..), Step (..), (|.), (|=))
-import Utils
 
 -- Types -----------------------------------------------------------------------
 
 
 -- Input -----------------------------------------------------------------------
 --
-parseInput : String -> Int
+parseInput : String -> Result String Int
 parseInput input =
-  0
+  Err "I don't parse any input right now!"
+
+--
+inputParser : Parser ()
+inputParser =
+  Parser.succeed ()
 
 -- Functions -------------------------------------------------------------------
 
 
 -- Solvers ---------------------------------------------------------------------
-part1 : String -> Int
+part1 : String -> Result String Int
 part1 input =
-  parseInput 0
+  parseInput input
 
-part2 : String -> Int
+part2 : String -> Result String Int
 part2 input =
-  parseInput 0
+  parseInput input
 `
 
 // -----------------------------------------------------------------------------
@@ -57,8 +58,8 @@ fs.readFile('src/Main.elm', (err, data) => {
 
   const injectionCodeIndex = code.findIndex(line => line.includes(`<< INJECT ${year} SOLUTION >>`))
   const injectionCode = [
-    `    , Tuple.pair ( ${options.day}, 1, ${year} ) AdventOfCode${year}.Day${day}.part1`,
-    `    , Tuple.pair ( ${options.day}, 2, ${year} ) AdventOfCode${year}.Day${day}.part2`
+    `    , Tuple.pair (${options.day}, 1, ${year}) AdventOfCode${year}.Day${day}.part1`,
+    `    , Tuple.pair (${options.day}, 2, ${year}) AdventOfCode${year}.Day${day}.part2`
   ]
 
   code.splice(injectionImportIndex, 0, ...injectionImport)
