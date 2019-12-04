@@ -73,27 +73,23 @@ toInt (Password a b c d e f) =
   f
 
 --
-fromInt : Int -> Password
+fromInt : Int -> Maybe Password
 fromInt n =
   String.fromInt n
     |> Parser.run password
-    |> Result.withDefault (Password 0 0 0 0 0 0)
+    |> Result.toMaybe
 
 -- Functions -------------------------------------------------------------------
 --
-generateValidPasswords : List (Password -> Bool) -> Range -> List Password
+generateValidPasswords : List (Password -> Bool) -> Range -> Int
 generateValidPasswords predicates (lowerBound, upperBound) =
-  List.range lowerBound upperBound |> List.filterMap (fromInt >> \pass ->
-    if validate predicates pass then
-      Just pass
-    else
-      Nothing
-  )
-
+  List.range lowerBound upperBound 
+    |> List.filterMap (fromInt >> Maybe.map (validate predicates))
+    |> List.length
 --
 validate : List (Password -> Bool) -> Password -> Bool
-validate validators pass =
-  List.map ((|>) pass) validators
+validate predicates pass =
+  List.map ((|>) pass) predicates
     |> List.foldl (&&) True
 
 --
@@ -144,7 +140,7 @@ part1 input =
         ]
   in
   parseInput input
-    |> Result.map (generator >> List.length)
+    |> Result.map generator
 
 part2 : String -> Result String Int
 part2 input =
@@ -157,4 +153,4 @@ part2 input =
         ]
   in
   parseInput input
-    |> Result.map (generator >> List.length)
+    |> Result.map generator
